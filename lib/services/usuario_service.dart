@@ -13,7 +13,7 @@ class UsuarioService{
       final json = jsonDecode(response.body);
       return Usuario.listFromJson(json);
     } catch (err) {
-      throw Exception("Problemas ao listar");
+      throw Exception(err.toString());
     }
   }
 }

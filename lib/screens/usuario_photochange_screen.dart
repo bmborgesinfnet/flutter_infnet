@@ -52,28 +52,21 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Alteração de imagem de álbum")),
+      appBar: AppBar(title: const Text("Alteração Usuário")),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Column(
             children: [
-              Text("Alterando imagem do id ${usuarioSelecionado.id}"),
-              image == null?
-              Image.network(usuarioSelecionado.photoUrl):
-              Image.file(image!),
-              const Text("Imagem atual"),
-              Center(child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text("Cancelar")),
-                const SizedBox(width: 5,),
-                ElevatedButton(onPressed: () => alterarImagem(), child: const Text("Alterar")),
-                const SizedBox(width: 5,),
-                ElevatedButton(onPressed: () => salvarImagem(), child: const Text("Salvar"))
-              ],)
-              )
+              Text("id ${usuarioSelecionado.id}"),
+              SizedBox(
+                height: 400,
+                width: 400,
+                child: Image.network("https://source.unsplash.com/random"),
+              ),
+              Text("Nome ${usuarioSelecionado.name}"),
+              Text("Email ${usuarioSelecionado.email}"),
+              Text("Telefone ${usuarioSelecionado.phone}"),
             ],
           ),
         ),

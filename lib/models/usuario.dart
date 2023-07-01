@@ -4,15 +4,13 @@ class Usuario {
   String username;
   String email;
   String phone;
-  String photoUrl;
 
   Usuario(
       this.id,
       this.name,
       this.username,
       this.email,
-      this.phone,
-      this.photoUrl
+      this.phone
   );
 
   Usuario.fromJson(Map<String, dynamic> json):
@@ -20,16 +18,14 @@ class Usuario {
     name = json['name'],
     username = json['username'],
     email = json['email'],
-    phone = json['phone'],
-    photoUrl = json['photoUrl'];
+    phone = json['phone'];
 
     Map<String, dynamic> toJson() => {
       'id': id,
       'name': name,
       'username': username,
       'email': email,
-      'phone' : phone,
-      'photoUrl' : photoUrl
+      'phone' : phone
     };
 
   static List<Usuario> listFromJson(List<dynamic> json) {
