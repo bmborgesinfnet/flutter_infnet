@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_infnet/models/usuario.dart';
 import 'package:flutter_infnet/routes/RoutePaths.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,24 @@ class _UsuarioListItemState extends State<UsuarioListItem> {
     });
   }
 
+
+  void fetchImageUrl() async {
+      try {
+        final firebaseStorage = FirebaseStorage.instance;
+        final reference = firebaseStorage.ref("user/${widget.usuario.id}.jpg");
+        await reference.getDownloadURL().then((value) => {
+          setState(() {
+            imageUrl = value;
+          })
+        });
+      } catch (ignored) {
+        imagemLogin();
+      }
+    }
+
   @override
   Widget build(BuildContext context) {
-    imagemLogin();
+    //fetchImageUrl();
     final usuarioProvider = Provider.of<UsuarioProvider>(context);
     return ListTile(
       leading: SizedBox(
