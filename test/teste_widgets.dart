@@ -21,7 +21,8 @@ void main() {
   });
   testWidgets('Testar tela de SignIn', (WidgetTester tester) async {
     await tester.pumpWidget(
-        const MaterialApp(home: SignInScreen()));
+        const MaterialApp(home: SignInScreen())
+    );
 
     final campoEmail = find.byKey(const Key("texto_email"));
     final campoSenha = find.byKey(const Key("texto_senha"));
