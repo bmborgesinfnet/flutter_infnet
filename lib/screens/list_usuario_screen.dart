@@ -1,8 +1,9 @@
 import 'package:flutter_infnet/providers/usuario_provider.dart';
-import 'package:flutter_infnet/services/usuario_service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_infnet/routes/RoutePaths.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 import '../components/usuario_list_item.dart';
 import '../models/usuario.dart';
@@ -15,6 +16,15 @@ class UsuarioListScreen extends StatefulWidget {
 }
 
 class _UsuarioListScreenState extends State<UsuarioListScreen> {
+
+ Future<void> _logout() async {
+  FirebaseAuth.instance.signOut();
+  Navigator.of(context)
+            .pushReplacementNamed(RoutePaths.SIGN_IN_SCREEN);
+
+ }
+
+
   @override
   Widget build(BuildContext context) {
     final usuarioProvider = Provider.of<UsuarioProvider>(context);
@@ -31,7 +41,17 @@ class _UsuarioListScreenState extends State<UsuarioListScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Lista de usuários")),
+      appBar: AppBar(
+        title: const Text("Lista de usuários"),
+        actions: [
+          IconButton(
+            onPressed: (){
+              _logout();
+            },
+            icon: Icon(Icons.logout)
+          )
+        ],
+      ),
       body: FutureBuilder(
         future: usuarioProvider.listarUsuarios(),
         builder: (context, snapshot) {

@@ -5,12 +5,10 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter_infnet/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:flutter_infnet/main.dart';
+import 'package:flutter_infnet/screens/sign_in_screen.dart';
+import 'package:flutter/material.dart';
 
 import 'mock.dart';
 
@@ -21,19 +19,25 @@ void main() {
     await Firebase.initializeApp();
 
   });
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(const Aplicativo());
+  testWidgets('Testar tela de SignIn', (WidgetTester tester) async {
+    await tester.pumpWidget(
+        const MaterialApp(home: SignInScreen()));
 
-    // Verify that our counter starts at 0.
-    // expect(find.text('0'), findsOneWidget);
-    // expect(find.text('1'), findsNothing);
-    //
-    // // Tap the '+' icon and trigger a frame.
-    // await tester.tap(find.byIcon(Icons.add));
-    // await tester.pump();
-    //
-    // // Verify that our counter has incremented.
-    // expect(find.text('0'), findsNothing);
-    // expect(find.text('1'), findsOneWidget);
+    final campoEmail = find.byKey(const Key("texto_email"));
+    final campoSenha = find.byKey(const Key("texto_senha"));
+    final botaoCadastrar = find.byKey(const Key("botao_cadastrar"));
+    final botaoLogin = find.byKey(const Key("botao_login"));
+
+    //Verificar se o widget de email está existente
+    expect(campoEmail, findsWidgets);
+
+    //Verificar se o widget de senha está existente
+    expect(campoSenha, findsWidgets);
+
+    //Verificar se o botao de cadastrar está existente
+    expect(botaoCadastrar, findsWidgets);
+
+    //Verificar se o botao de login está existente
+    expect(botaoLogin, findsWidgets);
   });
 }

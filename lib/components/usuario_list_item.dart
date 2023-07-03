@@ -1,11 +1,10 @@
 import 'package:flutter_infnet/models/usuario.dart';
 import 'package:flutter_infnet/routes/RoutePaths.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_infnet_pkg/flutter_infnet_pkg.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/usuario_provider.dart';
-import 'package:http/http.dart' as http;
 
 class UsuarioListItem extends StatefulWidget {
   const UsuarioListItem({Key? key, required this.usuario}) : super(key: key);
@@ -28,14 +27,38 @@ class _UsuarioListItemState extends State<UsuarioListItem> {
 
   }
 
+  Future<void> imagemLogin() async {
+    var url = ImageCat().getImage();
+    setState(() {
+      imageUrl = url;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    imagemLogin();
     final usuarioProvider = Provider.of<UsuarioProvider>(context);
     return ListTile(
       leading: SizedBox(
         height: 100,
         width: 100,
-        child: Image.network(imageUrl),
+        child: Image.network(
+          imageUrl,
+          loadingBuilder: (BuildContext context, Widget child,
+            ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+            return Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
+            );
+          },
+        ),
       ),
       title: Text(widget.usuario.name),
       subtitle: Text(widget.usuario.email),

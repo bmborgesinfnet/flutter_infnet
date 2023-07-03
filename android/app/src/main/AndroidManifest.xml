@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.flutter_application_1"
+    package="com.brunomborges.flutter_application_1"
 >
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="flutter_infnet"
+        android:label="Consulta Usuario"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

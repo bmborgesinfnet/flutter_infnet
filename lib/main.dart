@@ -25,7 +25,7 @@ class Aplicativo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(create: (context) => UsuarioProvider(),
     child: MaterialApp(
-      title: "Lista de Albuns",
+      title: "Lista de Usuários",
       debugShowCheckedModeBanner: false,
       routes: {
         RoutePaths.SIGN_IN_SCREEN: (context) => const SignInScreen(),
