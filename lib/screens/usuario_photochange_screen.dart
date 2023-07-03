@@ -17,7 +17,7 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
     final usuarioSelecionado = usuarioProvider.getUsuarioSelecionado();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Alteração Usuário")),
+      appBar: AppBar(title: const Text("Informações Usuário")),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
