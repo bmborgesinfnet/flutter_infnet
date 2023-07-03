@@ -15,6 +15,16 @@ class PhotoChangeScreen extends StatefulWidget {
 
 class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
   File? image;
+
+  late String imageUrl = "";
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
+  
   @override
   Widget build(BuildContext context) {
 
@@ -50,6 +60,29 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
       });
     }
 
+    void fetchImageUrl() async {
+      try {
+        final firebaseStorage = FirebaseStorage.instance;
+        final reference = firebaseStorage.ref("user/${usuarioSelecionado.id}.jpg");
+        await reference.getDownloadURL().then((value) => {
+          setState(() {
+            imageUrl = value;
+          })
+        });
+        print(imageUrl);
+      } catch (ignored) {
+        setState(() {
+            imageUrl = "https://cataas.com/cat";
+        });
+      }
+    }
+
+
+    fetchImageUrl();
+
+
+    
+
     
 
     return Scaffold(
@@ -60,13 +93,13 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
           child: Column(
             children: [
               Text("id ${usuarioSelecionado.id}"),
-              SizedBox(
+              if(imageUrl.length > 0) SizedBox(
                 height: 400,
                 width: 400,
                 child: 
                   image == null?
                   Image.network(
-                    "https://source.unsplash.com/random",
+                    imageUrl,
                     loadingBuilder: (BuildContext context, Widget child,
                       ImageChunkEvent? loadingProgress) {
                       if (loadingProgress == null) {
@@ -92,6 +125,8 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                 ElevatedButton(onPressed: () => alterarImagem(), child: const Text("Alterar")),
+                const SizedBox(width: 5,),
+                if (image != null) ElevatedButton(onPressed: () => salvarImagem(), child: const Text("Salvar"))
               ],)
               )
             ],

@@ -9,7 +9,7 @@ import '../services/usuario_service.dart';
 
 class UsuarioProvider with ChangeNotifier {
  final usuarioList = [];
- List<int> favoriteList = [];
+ List<int> likeList = [];
  final uid = FirebaseAuth.instance.currentUser?.uid;
  final _usuarioService = UsuarioService();
  late Usuario usuarioSelecionado;
@@ -25,9 +25,9 @@ class UsuarioProvider with ChangeNotifier {
  UsuarioProvider() {
   listarfavoritos().then((value) {
    try {
-    favoriteList = List<int>.from(value);
+    likeList = List<int>.from(value);
    } catch (error) {
-    favoriteList = [];
+    likeList = [];
    }
   });
  }
@@ -37,75 +37,75 @@ class UsuarioProvider with ChangeNotifier {
  }
 
  Future<List<dynamic>> listarfavoritos() async {
-  DatabaseReference ref = FirebaseDatabase.instance.ref("users/$uid/favorites");
-  List<dynamic> favoriteList = [];
+  DatabaseReference ref = FirebaseDatabase.instance.ref("users/$uid/like");
+  List<dynamic> likeList = [];
   try {
    DataSnapshot snapshot = await ref.get();
 
    if (snapshot.value != null) {
-    favoriteList = snapshot.value as List<dynamic>;
+    likeList = snapshot.value as List<dynamic>;
 
-    print("Lista de favoritos: $favoriteList");
-    return favoriteList;
+    print("Lista de likes: $likeList");
+    return likeList;
    } else {
-    print("Lista de favoritos não encontrada.");
+    print("Lista de likes não encontrada.");
    }
   } catch (error) {
-   print("Erro ao ler lista de favoritos: $error");
+   print("Erro ao ler lista de likes: $error");
   }
-  return favoriteList;
+  return likeList;
  }
 
  Future<bool> adicionarNovoFavorito(int idFavorito) async {
-  DatabaseReference ref = FirebaseDatabase.instance.ref("users/$uid/favorites");
+  DatabaseReference ref = FirebaseDatabase.instance.ref("users/$uid/like");
 
   try {
    DataSnapshot snapshot = await ref.get();
-   List<dynamic> favoriteList = [];
+   List<dynamic> likeList = [];
 
    if (snapshot.value != null) {
     if (snapshot.value is List) {
-     favoriteList = List<dynamic>.from(snapshot.value as List<dynamic>);
+     likeList = List<dynamic>.from(snapshot.value as List<dynamic>);
     } else {
-     favoriteList.add(snapshot.value);
+     likeList.add(snapshot.value);
     }
    }
 
-   favoriteList.add(idFavorito);
+   likeList.add(idFavorito);
 
-   await ref.set(favoriteList);
+   await ref.set(likeList);
 
-   print("Novo favorito adicionado com sucesso.");
+   print("Novo likes adicionado com sucesso.");
    return true;
   } catch (error) {
-   print("Erro ao adicionar novo favorito: $error");
+   print("Erro ao adicionar likes: $error");
    return false;
   }
  }
 
  Future<bool> removerFavorito(int idFavorito) async {
-  DatabaseReference ref = FirebaseDatabase.instance.ref("users/$uid/favorites");
+  DatabaseReference ref = FirebaseDatabase.instance.ref("users/$uid/like");
 
   try {
    DataSnapshot snapshot = await ref.get();
-   List<dynamic> favoriteList = [];
+   List<dynamic> likeList = [];
 
    if (snapshot.value != null) {
     if (snapshot.value is List) {
-     favoriteList = List<dynamic>.from(snapshot.value as List<dynamic>);
+     likeList = List<dynamic>.from(snapshot.value as List<dynamic>);
     } else {
-     favoriteList.add(snapshot.value);
+     likeList.add(snapshot.value);
     }
    }
 
-   favoriteList.remove(idFavorito);
+   likeList.remove(idFavorito);
 
-   await ref.set(favoriteList);
+   await ref.set(likeList);
 
-   print("Favorito removido com sucesso.");
+   print("like removido com sucesso.");
    return true;
   } catch (error) {
-   print("Erro ao remover favorito: $error");
+   print("Erro ao remover like: $error");
    return false;
   }
  }
