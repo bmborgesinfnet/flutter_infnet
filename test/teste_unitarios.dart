@@ -12,5 +12,13 @@ void main() {
       String? contentType = response.headers['content-type'];
       expect(contentType, startsWith('image/'));
     });
+    test('Testar acesso api externa', () async {
+      final _baseUrl = "https://jsonplaceholder.typicode.com";
+      final _resource = "users";
+      final uri = Uri.parse("$_baseUrl/$_resource");
+      final response = await http.get(uri);
+      expect(response.statusCode, equals(200));
+    });
+
   });
 }
