@@ -52,7 +52,7 @@ class _UsuarioListItemState extends State<UsuarioListItem> {
 
   @override
   Widget build(BuildContext context) {
-    //fetchImageUrl();
+    fetchImageUrl();
     final usuarioProvider = Provider.of<UsuarioProvider>(context);
     return ListTile(
       leading: SizedBox(

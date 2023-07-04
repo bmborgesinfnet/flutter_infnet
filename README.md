@@ -10,7 +10,13 @@ flutter
 ![Print 02](docs/Screenshot_20230702-225600.jpg)
 
 ### Lista Usuarios
-![Print 02](docs/Screenshot_20230702-225620.jpg)
+![Print 03](docs/Screenshot_20230702-225620.jpg)
 
-### Informações
-![Print 02](docs/Screenshot_20230702-232430.jpg)
+### Alterar imagem Informações
+![Print 04](docs/info_alterar.jpg)
+
+### Salvar Imagem Informações apos escolha da imagem Inform
+![Print 05](docs/info_salvar.jpg)
+
+### Deletar Imagem Informações caso seja uma imagem salva no firestore
+![Print 06](docs/info_deletar.jpg)

@@ -17,6 +17,7 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
   File? image;
 
   late String imageUrl = "";
+  late bool imageFirestore = false;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
 
     final usuarioProvider = Provider.of<UsuarioProvider>(context);
     final usuarioSelecionado = usuarioProvider.getUsuarioSelecionado();
+
 
     void alterarImagem() async {
       final picker = ImagePicker();
@@ -52,11 +54,27 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
       final reference = firebaseStorage.ref("user/${usuarioSelecionado.id}.jpg");
       final upload = reference.putFile(image!);
       upload.whenComplete(() {
+        setState(() {
+          image = null;
+        });
         print("Upload realizado com sucesso.");
-        Navigator.of(context).pushNamedAndRemoveUntil(RoutePaths.USUARIO_LIST_SCREEN, (route) => false);
+        //Navigator.of(context).pushNamedAndRemoveUntil(RoutePaths.USUARIO_LIST_SCREEN, (route) => false);
       });
       upload.catchError((error, stackTrace) {
         print("Upload falhou: $error");
+      });
+    }
+
+    void deletarImagem() {
+      final firebaseStorage = FirebaseStorage.instance;
+      final reference = firebaseStorage.ref("user/${usuarioSelecionado.id}.jpg");
+      final delete = reference.delete();
+      delete.whenComplete(() {
+        print("Delete realizado com sucesso.");
+        //Navigator.of(context).pushNamedAndRemoveUntil(RoutePaths.USUARIO_LIST_SCREEN, (route) => false);
+      });
+      delete.catchError((error, stackTrace) {
+        print("Delete falhou: $error");
       });
     }
 
@@ -67,23 +85,20 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
         await reference.getDownloadURL().then((value) => {
           setState(() {
             imageUrl = value;
+            imageFirestore = true;
           })
         });
         print(imageUrl);
       } catch (ignored) {
         setState(() {
             imageUrl = "https://cataas.com/cat";
+            imageFirestore = false;
         });
       }
     }
 
 
     fetchImageUrl();
-
-
-    
-
-    
 
     return Scaffold(
       appBar: AppBar(title: const Text("Informações Usuário")),
@@ -93,6 +108,7 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
           child: Column(
             children: [
               Text("id ${usuarioSelecionado.id}"),
+              if(!imageFirestore) const Text("Imagem Temporaria"),
               if(imageUrl.length > 0) SizedBox(
                 height: 400,
                 width: 400,
@@ -126,7 +142,12 @@ class _PhotoChangeScreenState extends State<PhotoChangeScreen> {
                 children: [
                 ElevatedButton(onPressed: () => alterarImagem(), child: const Text("Alterar")),
                 const SizedBox(width: 5,),
-                if (image != null) ElevatedButton(onPressed: () => salvarImagem(), child: const Text("Salvar"))
+                if (image != null) ElevatedButton(onPressed: () => salvarImagem(), child: const Text("Salvar"), style :  ElevatedButton.styleFrom(
+                      primary: Colors.green, // Background color
+                  )),
+                if (imageFirestore) ElevatedButton(onPressed: () => deletarImagem(), child: const Text("Deletar"), style :  ElevatedButton.styleFrom(
+                      primary: Colors.red, // Background color
+                  ),)
               ],)
               )
             ],
